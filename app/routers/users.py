@@ -1,7 +1,9 @@
+from typing import Optional
+
 from fastapi import APIRouter
 
-from app.tools.data_generator import UserGenerator
-from app.tools.models import User
+from app.routes_generator.users_routes import UserGenerator
+from app.tools.models import User, Post, Todo
 
 router = APIRouter(
     prefix="/public/v1/users",
@@ -9,9 +11,9 @@ router = APIRouter(
 )
 users_generator = UserGenerator()
 
-
+# http://127.0.0.1:8000/items/foo-item?needy=sooooneedy
 @router.get("/")
-async def users():
+async def get_users_as_pagination():
     return users_generator.get_items()
 
 
@@ -35,16 +37,21 @@ async def delete_user(user_id: int):
     return users_generator.delete_item(item_id=user_id)
 
 
-@router.get("?page={page_id}")
-async def get_all_users_specific_page(page_id: int):
-    return users_generator.get_items(page_id=page_id)
-
-
 @router.get("/{user_id}/posts")
-async def get_user_posts(user_id: int):
+async def get_user_posts_as_pagination(user_id: int):
     return users_generator.get_item(prefix=f"/{user_id}/posts")
 
 
+@router.post("/{user_id}/posts")
+async def create_user_posts(user_id: int, post: Post):
+    return users_generator.create_item(item=post, url_prefix=f"/{user_id}/posts")
+
+
 @router.get("/{user_id}/todos")
-async def get_user_todos(user_id: int):
+async def get_user_todos_as_pagination(user_id: int):
     return users_generator.get_item(prefix=f"/{user_id}/todos")
+
+
+@router.post("/{user_id}/todos")
+async def create_user_todo(user_id: int, todo: Todo):
+    return users_generator.create_item(item=todo, url_prefix=f"/{user_id}/todos")

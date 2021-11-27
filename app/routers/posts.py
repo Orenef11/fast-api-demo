@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from app.tools.data_generator import PostsGenerator
+from app.routes_generator.posts_routes import PostsGenerator
 from app.tools.models import Post
 
 router = APIRouter(
@@ -11,7 +11,7 @@ posts_generator = PostsGenerator()
 
 
 @router.get("/")
-async def posts():
+async def get_posts_as_pagination():
     return posts_generator.get_items()
 
 
@@ -36,15 +36,6 @@ async def delete_post(post_id: int):
 
 
 @router.get("?page={page_id}")
-async def get_all_posts_specific_page(page_id: int):
+async def get_all_posts_by_page_id(page_id: int):
     return posts_generator.get_items(page_id=page_id)
 
-
-@router.get("?page={page_id}")
-async def get_all_posts_specific_page(page_id: int):
-    return posts_generator.get_items(page_id=page_id)
-
-
-@router.get("/{post_id}/posts")
-async def get_post_comments(post_id: int):
-    return posts_generator.get_item(prefix=f"/{post_id}/comments")

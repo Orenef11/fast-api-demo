@@ -1,3 +1,7 @@
 .env
 .vscode
 .pytest_cache
+__pycache__
+.git
+.idea
+logs

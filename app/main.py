@@ -2,7 +2,7 @@ from typing import Dict
 
 from fastapi import FastAPI
 
-from .routers import page_routers
+from app.routers import page_routers
 
 app = FastAPI()
 

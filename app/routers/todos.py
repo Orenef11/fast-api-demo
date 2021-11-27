@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from app.tools.data_generator import TodosGenerator
+from app.routes_generator.todos_routes import TodosGenerator
 from app.tools.models import Todo
 
 router = APIRouter(
@@ -11,7 +11,7 @@ todos_generator = TodosGenerator()
 
 
 @router.get("/")
-async def todos():
+async def get_todos_as_pagination():
     return todos_generator.get_items()
 
 
@@ -33,8 +33,3 @@ async def update_todo(todo_id: int, todo: Todo):
 @router.delete("/{todo_id}")
 async def delete_todo(todo_id: int):
     return todos_generator.delete_item(item_id=todo_id)
-
-
-@router.get("?page={page_id}")
-async def get_all_todos_specific_page(page_id: int):
-    return todos_generator.get_items(page_id=page_id)

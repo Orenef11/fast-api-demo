@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from app.tools.data_generator import CommentsGenerator
+from app.routes_generator.comments_routes import CommentsGenerator
 from app.tools.models import Comment
 
 router = APIRouter(
@@ -11,7 +11,7 @@ comments_generator = CommentsGenerator()
 
 
 @router.get("/")
-async def comments():
+async def get_comments_as_pagination():
     return comments_generator.get_items()
 
 
@@ -33,13 +33,3 @@ async def update_comment(comment_id: int, comment: Comment):
 @router.delete("/{comment_id}")
 async def delete_comment(comment_id: int):
     return comments_generator.delete_item(item_id=comment_id)
-
-
-@router.get("?page={page_id}")
-async def get_all_comments_specific_page(page_id: int):
-    return comments_generator.get_items(page_id=page_id)
-
-
-@router.get("?page={page_id}")
-async def get_all_comments_specific_page(page_id: int):
-    return comments_generator.get_items(page_id=page_id)

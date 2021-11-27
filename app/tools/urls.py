@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from functools import cached_property
 
 from app.consts import GO_REST_BASIC_URL
