@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 from typing import Dict
 
-import localstack_client.session
+# import localstack_client.session
 import pytest
 from fastapi.testclient import TestClient
 
@@ -19,8 +19,7 @@ def client() -> TestClient:
 
 @pytest.fixture(scope="module")
 def headers() -> Dict[str, str]:
-    if token := os.environ.get("AUTH_TOKEN"):
-        HEADERS["Authorization"] = f"Bearer {token}"
+    HEADERS["Authorization"] = "Bearer 80dc8410463333e3dd615b241ae8ee337700e51dc01b23276ec1ee0d9819e39e"
     return HEADERS
 
 
@@ -43,9 +42,9 @@ def pytest_sessionfinish(session, exitstatus):
     with open(file=result_path, mode="w", encoding="utf-8") as file:
         json.dump(session.results, file)
 
-    s3_resource = localstack_client.session.Session().resource('s3')
-    my_bucket = s3_resource.Bucket("go-rest-demo")
-    if not my_bucket.creation_date:
-        my_bucket.create()
-    s3_resource.meta.client.upload_file(Filename=str(result_path), Bucket=my_bucket.name, Key=result_path.name)
-    result_path.unlink()
+#     s3_resource = localstack_client.session.Session().resource('s3')
+#     my_bucket = s3_resource.Bucket("go-rest-demo")
+#     if not my_bucket.creation_date:
+#         my_bucket.create()
+#     s3_resource.meta.client.upload_file(Filename=str(result_path), Bucket=my_bucket.name, Key=result_path.name)
+#     result_path.unlink()
